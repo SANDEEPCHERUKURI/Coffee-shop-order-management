@@ -1,0 +1,19 @@
+[
+  {
+    "s.no":1,
+    "product_name":"Black Coffee",
+    "product_price":"$10"
+
+  },
+  {
+    "s.no":2,
+    "product_name":"Green Tea",
+    "product_price":"$02"
+  },
+  {
+    "s.no":3,
+    "product_name":"Cold Coffee",
+    "product_price":"$15.2"
+  }
+
+]

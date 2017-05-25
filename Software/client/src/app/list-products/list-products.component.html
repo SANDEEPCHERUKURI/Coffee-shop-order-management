@@ -1,0 +1,144 @@
+<div class="col-md-2 col-lg-2"></div>
+<div class="col-md-8 col-lg-8 col-sm-12">
+
+  <button class="btn btn-primary pull-right" (click)="bill()"><span class="glyphicon glyphicon-shopping-cart"></span> Bill Process</button>
+  <!--<div *ngIf="productList.length!=0">-->
+<table class="table table-bordered table-hover">
+  <thead>
+  <tr>
+    <th>S.no</th>
+    <th>Product Name</th>
+    <th>Price</th>
+    <th width="30%">Actions</th>
+  </tr>
+  </thead>
+  <tbody *ngIf="productList.length!=0">
+  <tr *ngFor="let i of productList; let j= index">
+    <td>{{i.p_id}}</td>
+    <td>{{i.p_name}}</td>
+    <td>{{i.p_price}}</td>
+    <td><button type="button" class="btn btn-success btn-sm" (click)="getEditProduct(i.p_id,1)">
+      <span class="glyphicon glyphicon-pencil"></span>
+    </button>
+      <button type="button" class="btn btn-primary btn-sm" (click)="getEditProduct(i.p_id,0)">
+        <span class="glyphicon glyphicon-eye-open"></span>
+      </button>
+
+      <button type="button" class="btn btn-danger btn-sm" (click)="conformationDelete(j)">
+        <span class="glyphicon glyphicon-remove"></span>
+      </button>
+    </td>
+  </tr>
+  </tbody>
+  <tbody *ngIf="productList.length==0">
+  <tr>
+    <td colspan="100" class="text-center">
+      <h3>No Products are there!!!</h3>
+    </td>
+  </tr>
+  </tbody>
+</table>
+  <button class="btn btn-success" (click)="childModal.show()"><span class="glyphicon glyphicon-plus-sign"></span> ADD Product</button>
+  <!--</div>-->
+</div>
+<!---------------------------------Add the Product-------------------------------------------------------------->
+
+<div bsModal #childModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">ADD NEW PRODUCT</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="childModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label>Sn.no</label>
+            <input type="number" class="form-control" name="productid" [(ngModel)]="productid">
+          </div>
+          <div class="form-group">
+            <label>Product Name</label>
+            <input type="text" class="form-control" name="productname" [(ngModel)]="productname"  placeholder="Enter Product Name">
+          </div>
+          <div class="form-group">
+            <label>Price</label>
+            <input type="number" class="form-control" name="productprice" [(ngModel)]="productprice" placeholder="Enter price">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="childModal.hide()" (click)="addNewProduct()">OK</button>
+        <button type="button" class="btn btn-default" (click)="childModal.hide()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!---------------------------------------------Edit for Particular Product--------------------------------------------------->
+<div bsModal #editModel="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">EDIT PRODUCT</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="editModel.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label>Sn.no</label>
+            <input type="number" class="form-control" value="{{edit_p_id}}" name="edit_productid" [(ngModel)]="edit_p_id" disabled="disabled">
+          </div>
+          <div class="form-group">
+            <label>Product Name</label>
+            <input type="text" class="form-control" value="{{edit_p_name}}" name="edit_productname" [(ngModel)]="edit_p_name"  placeholder="Enter Product Name">
+          </div>
+          <div class="form-group">
+            <label>Price</label>
+            <input type="number" class="form-control" value="{{edit_p_price}}" name="edit_productprice" [(ngModel)]="edit_p_price" placeholder="Enter price">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="editProduct()">OK</button>
+        <button type="button" class="btn btn-default" (click)="editModel.hide()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!----------------------------------------------------------------------------------------------->
+<div bsModal #viewModel="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">VIEW PRODUCT</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="viewModel.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label>Sn.no</label>
+            <input type="number" class="form-control" value="{{edit_p_id}}" name="edit_productid" [(ngModel)]="edit_p_id" disabled="disabled">
+          </div>
+          <div class="form-group">
+            <label>Product Name</label>
+            <input type="text" class="form-control" value="{{edit_p_name}}" name="edit_productname" [(ngModel)]="edit_p_name" disabled="disabled">
+          </div>
+          <div class="form-group">
+            <label>Price</label>
+            <input type="number" class="form-control" value="{{edit_p_price}}" name="edit_productprice" [(ngModel)]="edit_p_price" disabled="disabled">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+
+        <button type="button" class="btn btn-default" (click)="viewModel.hide()">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
