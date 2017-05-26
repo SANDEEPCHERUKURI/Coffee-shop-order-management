@@ -10,6 +10,8 @@ import { RouterModule } from '@angular/router';
 import { rootRouterConfig } from './app.router';
 import { ModalModule } from 'ngx-bootstrap';
 import { LocalStorageModule } from 'angular-2-local-storage';
+import {SelectModule} from 'ng2-select';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -26,6 +28,7 @@ import { LocalStorageModule } from 'angular-2-local-storage';
     LocalStorageModule.withConfig({
       prefix: 'my-app',
       storageType: 'localStorage'}),
+    SelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]

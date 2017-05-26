@@ -2,11 +2,13 @@ import { Component, OnInit,ViewChild } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap';
 import { LocalStorageService } from 'angular-2-local-storage';
 import {Router} from '@angular/router';
+import {FormGroup, FormBuilder, Validators, FormControl} from '@angular/forms';
 
 @Component({
   selector: 'app-list-products',
   templateUrl: './list-products.component.html',
-  styleUrls: ['./list-products.component.css']
+  styleUrls: ['./list-products.component.css'],
+  providers:[FormBuilder]
 })
 export class ListProductsComponent {
   @ViewChild('childModal') public childModal:ModalDirective;
@@ -19,8 +21,24 @@ export class ListProductsComponent {
   public edit_p_id:number;
   public edit_p_name:string;
   public edit_p_price:number;
-  constructor(public localStorageService: LocalStorageService,private Routes:Router) {
+  public complexForm : FormGroup;
+  constructor(public localStorageService: LocalStorageService,private Routes:Router,public fb: FormBuilder) {
     this.productList=this.localStorageService.get("list_products");
+
+    this.complexForm = this.fb.group({
+      'S.no' :new FormControl('',[Validators.required]),
+      'productname':new FormControl ('',[Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(10)])]),
+      'productprice' :new FormControl('',[ Validators.compose([Validators.required,Validators.maxLength(2)])])
+    })
+    // console.log(this.complexForm);
+    // this.complexForm.valueChanges.subscribe( (form: any) => {
+    //     console.log('form changed to:', form);
+    //   }
+    // );
+    // this.complexForm.valueChanges.subscribe( (form: any) => {
+    //     console.log('form changed to:', form);
+    //   }
+    // );
 
   }
   addNewProduct=()=>{
@@ -66,7 +84,6 @@ export class ListProductsComponent {
     this.localStorageService.set("list_products",this.productList);
   }
   bill(){
-    alert("hello")
     this.Routes.navigate(['/bill'])
   }
 

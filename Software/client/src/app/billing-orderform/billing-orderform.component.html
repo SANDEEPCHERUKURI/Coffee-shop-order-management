@@ -1,24 +1,82 @@
-<p>
-  billing-orderform works!
-</p>
-<!---------------------------------------Customer Toggel----------------------------------------------------------->
-<div class="modal fade" bsModal #staticModal="bs-modal"
-     tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title pull-left">Static modal</h4>
-        <button type="button" class="close pull-right" aria-label="Close" (click)="staticModal.hide()">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        This is static modal, backdrop click will not close it.
-        Click <b>&times;</b> to close modal.
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" (click)="staticModal.hide()">Close</button>
-      </div>
-    </div>
+
+<div class="col-md-2 col-lg-2"></div>
+<div class="col-md-8 col-lg-8 col-sm-12">
+  <h3>Order your bill</h3>
+  <div class="row">
+  <ng-select #ng [allowClear]="true"
+             [items]="list_items"
+             (data)="refreshValue($event)"
+             (removed)="removed($event)"
+             (typed)="typed($event)"
+             placeholder="No item selected">
+  </ng-select>
+    <p></p>
+  <button class="btn btn-primary" (click)="selected(value.text)">Order It</button>
   </div>
+
+
+<!--Shopping Cart table-->
+<div class="table-responsive">
+  <table class="table product-table">
+    <!--Table head-->
+    <thead>
+    <tr>
+      <th class="col-md-2">S.No</th>
+      <th class="col-md-2">Product Name</th>
+      <th class="col-md-4">Price</th>
+      <th class="col-md-6">QTY</th>
+      <th class="col-md-6">Amount</th>
+    </tr>
+    </thead>
+    <!--/Table head-->
+
+    <!--Table body-->
+    <tbody *ngIf="billProducts.length!=0">
+
+    <!--First row-->
+    <tr *ngFor="let i of billProducts; let j=index">
+      <th scope="row">
+        {{j+1}}
+      </th>
+      <td>
+        <h5><strong>{{i.bill_name}}</strong></h5>
+      </td>
+      <td>{{i.bill_price}}</td>
+      <td>
+       <!-- <span class="qty">{{i.bill_qty}} </span>-->
+        <!--<section class="form-control">-->
+          <!--<option *ngFor="let qyt of arr">{{qyt}}</option>-->
+        <select class="form-control" #t name="pro_qyt"  (change)="addQuantity(i.bill_name,t.value)">
+          <option selected disabled><strong>{{i.bill_qty}}</strong></option>
+          <option *ngFor="let qyt of arr" [value]="qyt" value={{qyt}}>{{qyt}}</option>
+        </select>
+      </td>
+      <td>{{i.bill_tot_price}}</td>
+    </tr>
+    <!--/First row-->
+    <!--Fourth row-->
+    <tr>
+      <td><h4><strong>Total Qty:</strong></h4></td>
+      <td><h4>{{billProducts.length}}</h4></td>
+      <td colspan="1"></td>
+      <td>
+        <h4><strong>Total Amount</strong></h4></td>
+      <td>
+        <h4><strong>{{totalBill}}</strong></h4></td>
+      <td colspan="2"><button type="button" class="btn btn-primary">Complete purchase  <i class="fa fa-angle-right right"></i></button></td>
+    </tr>
+    <!--/Fourth row-->
+
+    </tbody>
+    <tbody *ngIf="billProducts.length==0">
+    <tr>
+      <td colspan="100" class="text-center">
+        <p><strong>No Products are there in your cart!!!</strong></p>
+      </td>
+    </tr>
+    </tbody>
+    <!--/Table body-->
+  </table>
+</div>
+<!--/Shopping Cart table-->
 </div>
