@@ -11,12 +11,14 @@ import { rootRouterConfig } from './app.router';
 import { ModalModule } from 'ngx-bootstrap';
 import { LocalStorageModule } from 'angular-2-local-storage';
 import {SelectModule} from 'ng2-select';
+import { ViewBillComponent } from './view-bill/view-bill.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ListProductsComponent,
-    BillingOrderformComponent
+    BillingOrderformComponent,
+    ViewBillComponent
   ],
   imports: [
     BrowserModule,

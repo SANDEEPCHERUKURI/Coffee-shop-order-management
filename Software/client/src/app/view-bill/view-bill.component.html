@@ -1,0 +1,102 @@
+
+<div class="col-md-2 col-lg-2"></div>
+<div class="col-md-8 col-lg-8 col-sm-12">
+
+<table class="table table-bordered table-hover">
+  <thead>
+  <tr>
+    <th>S.no</th>
+    <th>Items</th>
+    <th>Total Bill</th>
+    <th >Actions</th>
+  </tr>
+  </thead>
+  <tbody >
+ <!-- <ng-container *ngFor="let i of this.billTable; let count=index">-->
+  <tr *ngFor="let j of showbillrow; let count=index">
+    <!--<template *ngFor="let j of i">-->
+    <td>{{j.bill_id}}</td>
+    <td>{{j.billby}}</td>
+    <td>{{j.total_bill}}</td>
+    <td>
+      <button type="button" class="btn btn-primary btn-sm">
+        <span class="glyphicon glyphicon-eye-open" (click)="getbill(j.bill_id,j.total_bill)"></span>
+      </button>
+    </td>
+    <!--</template>-->
+  </tr>
+  <!--</ng-container>-->
+  </tbody>
+  <tbody *ngIf="billTable.length==0">
+  <tr>
+    <td colspan="100" class="text-center">
+      <h3>No Bills are there!!!</h3>
+    </td>
+  </tr>
+  </tbody>
+</table>
+</div>
+<!---------------------------------------------------------View Bill------------------------------------>
+<div bsModal #childModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">Your BILL</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="childModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table class="table product-table">
+            <!--Table head-->
+            <thead>
+            <tr>
+              <th class="col-md-2">S.No</th>
+              <th class="col-md-2">Product Name</th>
+              <th class="col-md-4">Price</th>
+              <th class="col-md-6">QTY</th>
+              <th class="col-md-6">Amount</th>
+            </tr>
+            </thead>
+            <!--/Table head-->
+
+            <!--Table body-->
+
+            <tbody >
+            <!--First row-->
+           <!-- <ng-container *ngFor=" let j of getshowbill; let num=index">-->
+            <tr *ngFor="let i of getshowbill[0];let num=index" >
+              <th scope="row">
+                {{num+1}}
+              </th>
+              <td>
+                <h5><strong>{{i.bill_name}}</strong></h5>
+              </td>
+              <td>{{i.bill_price}}</td>
+              <td>
+                {{i.bill_qty}}
+              </td>
+              <td>{{i.bill_tot_price}}</td>
+            </tr>
+            <tr>
+              <td colspan="3"></td>
+              <td>
+                <h4><strong>Total Amount</strong></h4></td>
+              <td>
+                <h4><strong>{{totalbill}}</strong></h4></td>
+            </tr>
+            <!--/Fourth row-->
+
+            </tbody>
+
+            <!--/Table body-->
+          </table>
+        </div>
+        </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" (click)="childModal.hide()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

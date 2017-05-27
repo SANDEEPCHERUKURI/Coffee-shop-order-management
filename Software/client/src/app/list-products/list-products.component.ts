@@ -67,7 +67,6 @@ export class ListProductsComponent {
   editProduct=()=>{
     for (let i in this.productList){
       if(this.edit_p_id == this.productList[i].p_id){
-        alert("equal");
         this.productList[i].p_id=this.edit_p_id;
         this.productList[i].p_name=this.edit_p_name;
         this.productList[i].p_price=this.edit_p_price;
@@ -84,6 +83,7 @@ export class ListProductsComponent {
     this.localStorageService.set("list_products",this.productList);
   }
   bill(){
+
     this.Routes.navigate(['/bill'])
   }
 
