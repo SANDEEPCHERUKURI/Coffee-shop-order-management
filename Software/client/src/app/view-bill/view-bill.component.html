@@ -1,7 +1,8 @@
 
 <div class="col-md-2 col-lg-2"></div>
 <div class="col-md-8 col-lg-8 col-sm-12">
-
+<button class="btn btn-success pull-right" (click)="gotoBillPage()">
+  <span class="glyphicon glyphicon-shopping-cart"></span>BillPage</button>
 <table class="table table-bordered table-hover">
   <thead>
   <tr>
@@ -15,7 +16,7 @@
  <!-- <ng-container *ngFor="let i of this.billTable; let count=index">-->
   <tr *ngFor="let j of showbillrow; let count=index">
     <!--<template *ngFor="let j of i">-->
-    <td>{{j.bill_id}}</td>
+    <td>{{count+1}}</td>
     <td>{{j.billby}}</td>
     <td>{{j.total_bill}}</td>
     <td>

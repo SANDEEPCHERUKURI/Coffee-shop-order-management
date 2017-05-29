@@ -3,7 +3,6 @@ import { ModalDirective } from 'ngx-bootstrap';
 import { LocalStorageService } from 'angular-2-local-storage';
 import {Router} from '@angular/router';
 import {FormGroup, FormBuilder, Validators, FormControl} from '@angular/forms';
-
 @Component({
   selector: 'app-list-products',
   templateUrl: './list-products.component.html',
@@ -23,32 +22,33 @@ export class ListProductsComponent {
   public edit_p_price:number;
   public complexForm : FormGroup;
   constructor(public localStorageService: LocalStorageService,private Routes:Router,public fb: FormBuilder) {
-    this.productList=this.localStorageService.get("list_products");
-
-    this.complexForm = this.fb.group({
-      'S.no' :new FormControl('',[Validators.required]),
-      'productname':new FormControl ('',[Validators.compose([Validators.required, Validators.minLength(5), Validators.maxLength(10)])]),
-      'productprice' :new FormControl('',[ Validators.compose([Validators.required,Validators.maxLength(2)])])
-    })
-    // console.log(this.complexForm);
-    // this.complexForm.valueChanges.subscribe( (form: any) => {
-    //     console.log('form changed to:', form);
-    //   }
-    // );
-    // this.complexForm.valueChanges.subscribe( (form: any) => {
-    //     console.log('form changed to:', form);
-    //   }
-    // );
-
+    if(this.localStorageService.get("list_products")!=null) {
+      this.productList = this.localStorageService.get("list_products");
+    }
+    this.complexForm = fb.group({
+      'p_id' : [null, Validators.required],
+      'p_name': [null,  Validators.compose([Validators.required, Validators.minLength(2), Validators.maxLength(25)])],
+      'p_price' : [null, Validators.compose([Validators.required,Validators.pattern("[0-9]{2}")])]
+    });
+    console.log(this.complexForm);
+    this.complexForm.valueChanges.subscribe( (form: any) => {
+        console.log('form changed to:', form);
+      }
+    );
   }
-  addNewProduct=()=>{
-    let product_obj={
-      p_id:this.productid,
-      p_name:this.productname,
-      p_price:this.productprice
-    };
-    this.productList.push(product_obj);
+
+  // submitForm(value: any){
+  //   console.log(value);
+  // }
+  addNewProduct=(value:any)=>{
+    // let product_obj={
+    //   p_id:this.productid,
+    //   p_name:this.productname,
+    //   p_price:this.productprice
+    // };
+    this.productList.push(value);
     this.childModal.hide();
+    this.complexForm.reset();
     this.localStorageService.set("list_products",this.productList);
   }
   getEditProduct=(idProduct:number,opt:number)=>{

@@ -1,6 +1,7 @@
 import { Component, OnInit,ViewChild } from '@angular/core';
 import { LocalStorageService } from 'angular-2-local-storage';
 import { ModalDirective } from 'ngx-bootstrap';
+import {Router} from '@angular/router';
 
 
 @Component({
@@ -19,18 +20,27 @@ export class ViewBillComponent implements OnInit {
   public passbill:any=[];
   public getshowbill:any=[];
   @ViewChild('childModal') public childModal:ModalDirective;
-  constructor(public localStorageService: LocalStorageService) {
-   this.billTable = this.localStorageService.get('billtable');
+  constructor(public localStorageService: LocalStorageService,private Routes:Router) {
+    // if(this.billTable.length==0){
+    // this.billTable = this.localStorageService.get('billtable');
+    //
+    if(this.localStorageService.get('billtable')!=null) {
+      this.billTable = this.localStorageService.get('billtable');
+    }
    this.bill_token=this.localStorageService.get('billtoken');
-   this.bill_id=this.localStorageService.get('bill_id');
+  this.bill_id=this.localStorageService.get('bill_id');
    this.passbill=this.localStorageService.get('billpass');
- this.showbillrow=this.localStorageService.get('showbillrow');
+   // if(this.showbillrow.length==0) {
+   //   this.showbillrow = this.localStorageService.get('showbillrow');
+   // }
+    if(this.localStorageService.get('showbillrow')) {
+      this.showbillrow = this.localStorageService.get('showbillrow');
+    }
     this.viewProducts = this.localStorageService.get("bill_products");
  // console.log(this.viewProducts);
     this.updatebillTable();
   }
   ngOnInit() {
-
   }
 
   updatebillTable() {
@@ -56,16 +66,8 @@ export class ViewBillComponent implements OnInit {
       }
 
     }
-  // localStorage.clear();
+  //localStorage.clear();
     console.log(this.billTable);
-    this.getTableData();
-  }
-  getTableData(){
-    this.billTable.forEach((eachRecordrecord)=>{
-      console.log('-----------------');
-      console.log(eachRecordrecord);
-      console.log('-----------------');
-    })
   }
   getbill(bill_id,tot_bill){
       this.getshowbill=[];
@@ -82,6 +84,9 @@ export class ViewBillComponent implements OnInit {
       }
     }
     this.childModal.show();
+  }
+  gotoBillPage(){
+    this.Routes.navigate(['/bill']);
   }
   // tempmethod(){
   //

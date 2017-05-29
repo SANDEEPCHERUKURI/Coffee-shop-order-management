@@ -3,6 +3,7 @@ import { LocalStorageService } from 'angular-2-local-storage';
 import {SelectComponent} from 'ng2-select';
 import {Router} from '@angular/router';
 
+
 @Component({
   selector: 'app-billing-orderform',
   templateUrl: './billing-orderform.component.html',
@@ -13,9 +14,11 @@ export class BillingOrderformComponent implements OnInit {
     return this._selected;
   }
   @ViewChild('ng') public ngSelect :SelectComponent;
+
+
   public listofProducts:any=[];
   public customer:string='sandeep';
-  public totalBill:any=0;
+  public totalBill:number=0;
   public pro_qyt;
   public arr=[1,2,3,4,5,6,7,8,9,10];
   public billProducts:any=[];
@@ -31,8 +34,6 @@ export class BillingOrderformComponent implements OnInit {
     }
   }
   ngOnInit() {
-
-
     //this.staticModal.show();
   }
   public value:any;
@@ -85,14 +86,14 @@ export class BillingOrderformComponent implements OnInit {
       }
     }
   }
-  total_amount(){
+  total_amount=()=>{
     this.totalBill=0;
     this.showBillProcess=true
     for(let i in this.billProducts){
-      this.totalBill+=this.billProducts[i].bill_tot_price;
+      this.totalBill=(this.totalBill)+Number(this.billProducts[i].bill_tot_price);
     }
   }
-  addQuantity(item_name,qyt){
+  addQuantity=(item_name,qyt)=>{
 
     for (let j in this.billProducts) {
       if(item_name==this.billProducts[j].bill_name){
@@ -104,9 +105,9 @@ export class BillingOrderformComponent implements OnInit {
       }
     }
   }
-  navBillPage(){
+  navBillPage=()=>{
     this.bill_id+=1;
-    alert(this.bill_id);
+   // alert(this.bill_id);
     let billobj={
       bill_id:this.bill_id,
       total_bill:this.totalBill,
@@ -116,5 +117,7 @@ export class BillingOrderformComponent implements OnInit {
     this.localStorageService.set('billpass',billobj);
     this.Routes.navigate(['/viewbill'])
   }
-
+  ViewBillRecords=():void=>{
+    this.Routes.navigate(['/viewbill'])
+  }
 }

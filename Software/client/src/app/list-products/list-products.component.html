@@ -54,23 +54,46 @@
         </button>
       </div>
       <div class="modal-body">
-        <form>
-          <div class="form-group">
-            <label>Sn.no</label>
-            <input type="number" class="form-control" name="productid" [(ngModel)]="productid">
+        <form [formGroup]="complexForm" (ngSubmit)="addNewProduct(complexForm.value)">
+          <div class="form-group" [ngClass]="{'has-error':!complexForm.controls['p_id'].valid && complexForm.controls['p_id'].touched}">
+            <label>S.ID:</label>
+            <input class="form-control" type="text" placeholder="John" [formControl]="complexForm.controls['p_id']">
+            <div *ngIf="complexForm.controls['p_id'].hasError('required') && complexForm.controls['p_id'].touched" class="alert alert-danger">
+              You must include a Product id
+            </div>
+            <div *ngFor="let i of productList">
+              <div *ngIf="i.p_id==complexForm.value.p_id && complexForm.controls['p_id'].touched" class="alert alert-danger">
+                Id already taken
+              </div>
+            </div>
           </div>
-          <div class="form-group">
+          <div class="form-group" [ngClass]="{'has-error':!complexForm.controls['p_name'].valid && complexForm.controls['p_name'].touched}">
             <label>Product Name</label>
-            <input type="text" class="form-control" name="productname" [(ngModel)]="productname"  placeholder="Enter Product Name">
+            <input class="form-control" type="text" placeholder="Doe" [formControl]="complexForm.controls['p_name']">
+            <div *ngIf="complexForm.controls['p_name'].hasError('required') && complexForm.controls['p_name'].touched" class="alert alert-danger">You must include a last name.</div>
+            <div *ngIf="complexForm.controls['p_name'].hasError('minlength') && complexForm.controls['p_name'].touched" class="alert alert-danger">Your Product name must be at least 2 characters long.</div>
+            <div *ngIf="complexForm.controls['p_name'].hasError('maxlength') && complexForm.controls['p_name'].touched" class="alert alert-danger">Your Product name cannot exceed 25 characters.</div>
+            <div *ngFor="let i of productList">
+              <div *ngIf="i.p_name==complexForm.value.p_name && complexForm.controls['p_id'].touched" class="alert alert-danger">
+                Product Name already Exist
+              </div>
+            </div>
           </div>
+          <!----------------------------------------------------------------------------------------------------------------------------------------->
+          <div class="form-group" [ngClass]="{'has-error':!complexForm.controls['p_price'].valid && complexForm.controls['p_price'].touched}">
+            <label>Product Price</label>
+            <input class="form-control" type="number" placeholder="Doe" [formControl]="complexForm.controls['p_price']">
+            <div *ngIf="complexForm.controls['p_price'].hasError('required') && complexForm.controls['p_price'].touched" class="alert alert-danger">You must include a product name.</div>
+            <div *ngIf="complexForm.controls['p_price'].hasError('pattern') && complexForm.controls['p_price'].touched" class="alert alert-danger">Price should be less than $100.</div>
+          </div>
+          <!------------------------------------------------------------------------------------------------------------------------------------------>
+
           <div class="form-group">
-            <label>Price</label>
-            <input type="number" class="form-control" name="productprice" [(ngModel)]="productprice" placeholder="Enter price">
+            <button type="submit" class="btn btn-primary" [disabled]="!complexForm.valid">Submit</button>
           </div>
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-dismiss="childModal.hide()" (click)="addNewProduct()">OK</button>
         <button type="button" class="btn btn-default" (click)="childModal.hide()">Close</button>
       </div>
     </div>

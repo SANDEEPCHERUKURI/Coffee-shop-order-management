@@ -1,7 +1,7 @@
 
 <div class="col-md-2 col-lg-2"></div>
 <div class="col-md-8 col-lg-8 col-sm-12">
-  <button class="btn btn-primary pull-right" (click)="navBillPage()">VIEW BILL RECORDS</button>
+  <button class="btn btn-primary pull-right" (click)="ViewBillRecords()">VIEW BILL RECORDS</button>
   <h3>Order your bill</h3>
   <div class="row">
   <ng-select #ng [allowClear]="true"
@@ -62,7 +62,7 @@
         <h4><strong>Total Amount</strong></h4></td>
       <td>
         <h4><strong>{{totalBill}}</strong></h4></td>
-      <td colspan="2"><button type="button" class="btn btn-primary">Complete purchase  <i class="fa fa-angle-right right"></i></button></td>
+      <td colspan="2"><button type="button" class="btn btn-primary" (click)="lgModal.show()">Complete purchase  <i class="fa fa-angle-right right"></i></button></td>
     </tr>
     <!--/Fourth row-->
 
@@ -79,3 +79,23 @@
 </div>
 <!--/Shopping Cart table-->
 </div>
+<div bsModal #lgModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">Thank you </h4>
+        <button type="button" class="close pull-right" (click)="lgModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       Order Conform
+      </div>
+      <div class="modal-footer">
+        <!--<button type="button" class="btn btn-default pull-right" (click)="lgModal.hide()">Close</button>-->
+      <button type="button" class="btn btn-primary" (click)="navBillPage()">Conform</button>
+      </div>
+    </div>
+    </div>
+  </div>
+
