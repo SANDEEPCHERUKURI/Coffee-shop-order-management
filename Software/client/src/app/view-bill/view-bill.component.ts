@@ -66,7 +66,7 @@ export class ViewBillComponent implements OnInit {
       }
 
     }
-  //localStorage.clear();
+//  localStorage.clear();
     console.log(this.billTable);
   }
   getbill(bill_id,tot_bill){

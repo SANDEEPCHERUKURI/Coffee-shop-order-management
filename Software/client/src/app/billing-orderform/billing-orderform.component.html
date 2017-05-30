@@ -1,9 +1,11 @@
 
 <div class="col-md-2 col-lg-2"></div>
 <div class="col-md-8 col-lg-8 col-sm-12">
+
   <button class="btn btn-primary pull-right" (click)="ViewBillRecords()">VIEW BILL RECORDS</button>
   <h3>Order your bill</h3>
   <div class="row">
+    <div class="col-md-8 col-lg-8">
   <ng-select #ng [allowClear]="true"
              [items]="list_items"
              (data)="refreshValue($event)"
@@ -11,8 +13,10 @@
              (typed)="typed($event)"
              placeholder="No item selected">
   </ng-select>
-    <p></p>
+    </div>
+    <div class="col-md-2 col-lg-2">
   <button class="btn btn-primary" (click)="selected(value.text)">Order It</button>
+    </div>
   </div>
 <!--Shopping Cart table-->
 <div class="table-responsive">
@@ -57,15 +61,22 @@
     <tr>
       <td><h4><strong>Total Qty:</strong></h4></td>
       <td><h4>{{billProducts.length}}</h4></td>
-      <td colspan="1"></td>
+      <td>
+        <div class="container col-md-12">
+          <input type="text" placeholder="Customer Name" class="form-control pull-left" name="customer" [(ngModel)]="customer">
+        </div>
+      </td>
       <td>
         <h4><strong>Total Amount</strong></h4></td>
       <td>
         <h4><strong>{{totalBill}}</strong></h4></td>
-      <td colspan="2"><button type="button" class="btn btn-primary" (click)="lgModal.show()">Complete purchase  <i class="fa fa-angle-right right"></i></button></td>
+      <td colspan="2">
+        <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="right" title="Please Customer Name!" (click)="lgModal.show()" [disabled]="(!customer)">
+          Complete purchase
+          <i class="fa fa-angle-right right"></i></button>
+      </td>
     </tr>
     <!--/Fourth row-->
-
     </tbody>
     <tbody *ngIf="billProducts.length==0">
     <tr>
@@ -83,19 +94,18 @@
   <div class="modal-dialog modal-md">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title pull-left">Thank you </h4>
+        <h4 class="modal-title pull-left">Thank you {{customer}}</h4>
         <button type="button" class="close pull-right" (click)="lgModal.hide()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
-       Order Conform
+      <div class="modal-body text-center">
+        <h2>Order Conformed!!!</h2>
       </div>
       <div class="modal-footer">
         <!--<button type="button" class="btn btn-default pull-right" (click)="lgModal.hide()">Close</button>-->
       <button type="button" class="btn btn-primary" (click)="navBillPage()">Conform</button>
       </div>
     </div>
-    </div>
   </div>
-
+</div>

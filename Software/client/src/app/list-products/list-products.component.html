@@ -1,7 +1,8 @@
 <div class="col-md-2 col-lg-2"></div>
 <div class="col-md-8 col-lg-8 col-sm-12">
-
+<div *ngIf="productList.length!=0">
   <button class="btn btn-primary pull-right" (click)="bill()"><span class="glyphicon glyphicon-shopping-cart"></span> Bill Process</button>
+</div>
   <!--<div *ngIf="productList.length!=0">-->
 <table class="table table-bordered table-hover">
   <thead>
@@ -9,7 +10,7 @@
     <th>S.no</th>
     <th>Product Name</th>
     <th>Price</th>
-    <th width="30%">Actions</th>
+    <th colspan="1">Actions</th>
   </tr>
   </thead>
   <tbody *ngIf="productList.length!=0">
@@ -34,7 +35,7 @@
   <tbody *ngIf="productList.length==0">
   <tr>
     <td colspan="100" class="text-center">
-      <h3>No Products are there!!!</h3>
+      <h4>No Products are there!!!</h4>
     </td>
   </tr>
   </tbody>
@@ -57,7 +58,7 @@
         <form [formGroup]="complexForm" (ngSubmit)="addNewProduct(complexForm.value)">
           <div class="form-group" [ngClass]="{'has-error':!complexForm.controls['p_id'].valid && complexForm.controls['p_id'].touched}">
             <label>S.ID:</label>
-            <input class="form-control" type="text" placeholder="John" [formControl]="complexForm.controls['p_id']">
+            <input class="form-control" type="text" placeholder="Product Id" [formControl]="complexForm.controls['p_id']">
             <div *ngIf="complexForm.controls['p_id'].hasError('required') && complexForm.controls['p_id'].touched" class="alert alert-danger">
               You must include a Product id
             </div>
@@ -69,7 +70,7 @@
           </div>
           <div class="form-group" [ngClass]="{'has-error':!complexForm.controls['p_name'].valid && complexForm.controls['p_name'].touched}">
             <label>Product Name</label>
-            <input class="form-control" type="text" placeholder="Doe" [formControl]="complexForm.controls['p_name']">
+            <input class="form-control" type="text" placeholder="Product Name" [formControl]="complexForm.controls['p_name']">
             <div *ngIf="complexForm.controls['p_name'].hasError('required') && complexForm.controls['p_name'].touched" class="alert alert-danger">You must include a last name.</div>
             <div *ngIf="complexForm.controls['p_name'].hasError('minlength') && complexForm.controls['p_name'].touched" class="alert alert-danger">Your Product name must be at least 2 characters long.</div>
             <div *ngIf="complexForm.controls['p_name'].hasError('maxlength') && complexForm.controls['p_name'].touched" class="alert alert-danger">Your Product name cannot exceed 25 characters.</div>
@@ -79,15 +80,12 @@
               </div>
             </div>
           </div>
-          <!----------------------------------------------------------------------------------------------------------------------------------------->
           <div class="form-group" [ngClass]="{'has-error':!complexForm.controls['p_price'].valid && complexForm.controls['p_price'].touched}">
             <label>Product Price</label>
-            <input class="form-control" type="number" placeholder="Doe" [formControl]="complexForm.controls['p_price']">
+            <input class="form-control" type="number" placeholder="Enter price" [formControl]="complexForm.controls['p_price']">
             <div *ngIf="complexForm.controls['p_price'].hasError('required') && complexForm.controls['p_price'].touched" class="alert alert-danger">You must include a product name.</div>
             <div *ngIf="complexForm.controls['p_price'].hasError('pattern') && complexForm.controls['p_price'].touched" class="alert alert-danger">Price should be less than $100.</div>
           </div>
-          <!------------------------------------------------------------------------------------------------------------------------------------------>
-
           <div class="form-group">
             <button type="submit" class="btn btn-primary" [disabled]="!complexForm.valid">Submit</button>
           </div>
@@ -118,16 +116,33 @@
           <div class="form-group">
             <label>Product Name</label>
             <input type="text" class="form-control" value="{{edit_p_name}}" name="edit_productname" [(ngModel)]="edit_p_name"  placeholder="Enter Product Name">
+            <div class="alert alert-danger" *ngIf="((!edit_p_name))">
+              Name should be
+            </div>
+            <div class="alert alert-danger" *ngIf="((edit_p_name && edit_p_name.length>25))">
+              Name should be less than 25
+            </div>
+            <div class="alert alert-danger" *ngIf="((edit_p_name && edit_p_name.length<2))">
+              Name should be greater than 2
+            </div>
           </div>
           <div class="form-group">
             <label>Price</label>
             <input type="number" class="form-control" value="{{edit_p_price}}" name="edit_productprice" [(ngModel)]="edit_p_price" placeholder="Enter price">
+            <div *ngIf="edit_p_price<=0" class="alert alert-danger">
+              Price Can not be less than Zero or Zero
+            </div>
           </div>
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" (click)="editProduct()">OK</button>
-        <button type="button" class="btn btn-default" (click)="editModel.hide()">Close</button>
+        <div class="col-md-6">
+       <!-- <div *ngIf="((edit_p_price >0) && (edit_p_name && edit_p_name.length>2) && (edit_p_name && edit_p_name.length<25) && (edit_p_name) )">-->
+        <button type="button" class="btn btn-primary" (click)="editProduct()" [disabled]="((!edit_p_price)||(edit_p_price <0) || (edit_p_name && edit_p_name.length<2) || (edit_p_name && edit_p_name.length>25) || (!edit_p_name))">
+          OK</button>
+        <!--</div>-->
+        <!--<button type="button" class="btn btn-default" (click)="editModel.hide()">Close</button>-->
+        </div>
       </div>
     </div>
   </div>
@@ -135,7 +150,7 @@
 
 <!----------------------------------------------------------------------------------------------->
 <div bsModal #viewModel="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-md">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title pull-left">VIEW PRODUCT</h4>
@@ -146,22 +161,38 @@
       <div class="modal-body">
         <form>
           <div class="form-group">
-            <label>Sn.no</label>
-            <input type="number" class="form-control" value="{{edit_p_id}}" name="edit_productid" [(ngModel)]="edit_p_id" disabled="disabled">
+            <div class="col-md-8 col-lg-8">
+            <label> <h4>Product_ID:</h4></label>
+            </div>
+            <div class="col-md-2 col-lg-2">
+              <label> <h4>{{edit_p_id}}</h4></label>
+            <!--<input type="number" class="form-control" value="{{edit_p_id}}" name="edit_productid" [(ngModel)]="edit_p_id" disabled="disabled">-->
+            </div>
           </div>
           <div class="form-group">
-            <label>Product Name</label>
-            <input type="text" class="form-control" value="{{edit_p_name}}" name="edit_productname" [(ngModel)]="edit_p_name" disabled="disabled">
+            <div class="col-md-8 col-lg-8">
+              <label> <h4>Product Name:</h4></label>
+            </div>
+            <div class="col-md-2 col-lg-2">
+              <label> <h4>{{edit_p_name}}</h4></label>
+              <!--<input type="number" class="form-control" value="{{edit_p_id}}" name="edit_productid" [(ngModel)]="edit_p_id" disabled="disabled">-->
+            </div>
           </div>
           <div class="form-group">
-            <label>Price</label>
-            <input type="number" class="form-control" value="{{edit_p_price}}" name="edit_productprice" [(ngModel)]="edit_p_price" disabled="disabled">
+            <div class="col-md-8 col-lg-8">
+              <label> <h4>Product Price</h4></label>
+            </div>
+            <div class="col-md-2 col-lg-2">
+              <label> <h4>{{edit_p_price}}</h4></label>
+              <!--<input type="number" class="form-control" value="{{edit_p_id}}" name="edit_productid" [(ngModel)]="edit_p_id" disabled="disabled">-->
+            </div>
           </div>
         </form>
       </div>
-      <div class="modal-footer">
 
+      <div class="modal-footer">
         <button type="button" class="btn btn-default" (click)="viewModel.hide()">OK</button>
+        <button type="button" class="btn btn-default" (click)="viewModel.hide()">Cancel</button>
       </div>
     </div>
   </div>

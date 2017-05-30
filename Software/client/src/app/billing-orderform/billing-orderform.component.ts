@@ -17,7 +17,7 @@ export class BillingOrderformComponent implements OnInit {
 
 
   public listofProducts:any=[];
-  public customer:string='sandeep';
+  public customer:string;
   public totalBill:number=0;
   public pro_qyt;
   public arr=[1,2,3,4,5,6,7,8,9,10];
@@ -53,7 +53,7 @@ export class BillingOrderformComponent implements OnInit {
     }
     this.addBillProducts(value);
     this.ngSelect.items=this.list_items;
-  }
+  };
 
   public removed(value:string):void {
     console.log('Removed value is: ', value);
@@ -78,21 +78,21 @@ export class BillingOrderformComponent implements OnInit {
           bill_qty: 1,
           bill_price: this.listofProducts[i].p_price,
           bill_tot_price:this.listofProducts[i].p_price
-        }
+        };
         this.billProducts.push(billObj);
         this.total_amount();
         this.localStorageService.set("bill_products",this.billProducts);
 
       }
     }
-  }
+  };
   total_amount=()=>{
     this.totalBill=0;
-    this.showBillProcess=true
+    this.showBillProcess=true;
     for(let i in this.billProducts){
       this.totalBill=(this.totalBill)+Number(this.billProducts[i].bill_tot_price);
     }
-  }
+  };
   addQuantity=(item_name,qyt)=>{
 
     for (let j in this.billProducts) {
@@ -104,7 +104,7 @@ export class BillingOrderformComponent implements OnInit {
         break;
       }
     }
-  }
+  };
   navBillPage=()=>{
     this.bill_id+=1;
    // alert(this.bill_id);
@@ -116,7 +116,7 @@ export class BillingOrderformComponent implements OnInit {
     this.localStorageService.set("bill_id",this.bill_id);
     this.localStorageService.set('billpass',billobj);
     this.Routes.navigate(['/viewbill'])
-  }
+  };
   ViewBillRecords=():void=>{
     this.Routes.navigate(['/viewbill'])
   }

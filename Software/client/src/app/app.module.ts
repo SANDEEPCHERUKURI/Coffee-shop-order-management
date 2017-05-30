@@ -13,13 +13,15 @@ import { ModalModule } from 'ngx-bootstrap';
 import { LocalStorageModule } from 'angular-2-local-storage';
 import {SelectModule} from 'ng2-select';
 import { ViewBillComponent } from './view-bill/view-bill.component';
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ListProductsComponent,
     BillingOrderformComponent,
-    ViewBillComponent
+    ViewBillComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,

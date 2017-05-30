@@ -36,7 +36,6 @@ export class ListProductsComponent {
       }
     );
   }
-
   // submitForm(value: any){
   //   console.log(value);
   // }
@@ -83,8 +82,6 @@ export class ListProductsComponent {
     this.localStorageService.set("list_products",this.productList);
   }
   bill(){
-
     this.Routes.navigate(['/bill'])
   }
-
 }
