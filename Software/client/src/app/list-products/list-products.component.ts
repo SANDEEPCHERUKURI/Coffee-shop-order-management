@@ -13,6 +13,7 @@ export class ListProductsComponent {
   @ViewChild('childModal') public childModal:ModalDirective;
   @ViewChild('editModel') public editModel :ModalDirective;
   @ViewChild('viewModel') public viewModel:ModalDirective;
+  @ViewChild('deleteModel') public deleteModel:ModalDirective;
   public productid:number;
   public productname:string;
   public productprice:number;
@@ -80,8 +81,10 @@ export class ListProductsComponent {
     this.productList.splice(del_index,1);
     console.log(this.productList);
     this.localStorageService.set("list_products",this.productList);
+    this.deleteModel.hide();
   }
   bill(){
     this.Routes.navigate(['/bill'])
   }
+
 }

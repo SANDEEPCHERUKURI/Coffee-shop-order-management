@@ -10,15 +10,15 @@
     <th>S.no</th>
     <th>Product Name</th>
     <th>Price</th>
-    <th colspan="1">Actions</th>
+    <th>Actions</th>
   </tr>
   </thead>
   <tbody *ngIf="productList.length!=0">
   <tbody>
   <tr *ngFor="let i of productList; let j= index">
-    <td>{{i.p_id}}</td>
+    <td>{{j+1}}</td>
     <td>{{i.p_name}}</td>
-    <td>{{i.p_price}}</td>
+    <td>{{i.p_price | currency:'USD':true:'1.2-2'}}</td>
     <td><button type="button" class="btn btn-success btn-sm" (click)="getEditProduct(i.p_id,1)">
       <span class="glyphicon glyphicon-pencil"></span>
     </button>
@@ -26,10 +26,29 @@
         <span class="glyphicon glyphicon-eye-open"></span>
       </button>
 
-      <button type="button" class="btn btn-danger btn-sm" (click)="conformationDelete(j)">
+      <button type="button" class="btn btn-danger btn-sm" (click)="deleteModel.show()">
         <span class="glyphicon glyphicon-remove"></span>
       </button>
     </td>
+    <div bsModal #deleteModel="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title pull-left">Delete Conformation</h4>
+            <button type="button" class="close pull-right" aria-label="Close" (click)="deleteModel.hide()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Are you sure that you want to delete <strong>{{i.p_name}}</strong>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" (click)="conformationDelete(j)">Delete</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" (click)="deleteModel.hide()">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </tr>
   </tbody>
   <tbody *ngIf="productList.length==0">
@@ -49,7 +68,7 @@
   <div class="modal-dialog modal-md">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title pull-left">ADD NEW PRODUCT</h4>
+        <h4 class="modal-title pull-left">Add New Product</h4>
         <button type="button" class="close pull-right" aria-label="Close" (click)="childModal.hide()">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -83,7 +102,7 @@
           <div class="form-group" [ngClass]="{'has-error':!complexForm.controls['p_price'].valid && complexForm.controls['p_price'].touched}">
             <label>Product Price</label>
             <input class="form-control" type="number" placeholder="Enter price" [formControl]="complexForm.controls['p_price']">
-            <div *ngIf="complexForm.controls['p_price'].hasError('required') && complexForm.controls['p_price'].touched" class="alert alert-danger">You must include a product name.</div>
+            <div *ngIf="complexForm.controls['p_price'].hasError('required') && complexForm.controls['p_price'].touched" class="alert alert-danger">You must include a product price.</div>
             <div *ngIf="complexForm.controls['p_price'].hasError('pattern') && complexForm.controls['p_price'].touched" class="alert alert-danger">Price should be less than $100.</div>
           </div>
           <div class="form-group">
@@ -136,13 +155,13 @@
         </form>
       </div>
       <div class="modal-footer">
-        <div class="col-md-6">
+        <!--<div class="col-md-6">-->
        <!-- <div *ngIf="((edit_p_price >0) && (edit_p_name && edit_p_name.length>2) && (edit_p_name && edit_p_name.length<25) && (edit_p_name) )">-->
         <button type="button" class="btn btn-primary" (click)="editProduct()" [disabled]="((!edit_p_price)||(edit_p_price <0) || (edit_p_name && edit_p_name.length<2) || (edit_p_name && edit_p_name.length>25) || (!edit_p_name))">
           OK</button>
         <!--</div>-->
-        <!--<button type="button" class="btn btn-default" (click)="editModel.hide()">Close</button>-->
-        </div>
+        <button type="button" class="btn btn-default" (click)="editModel.hide()">Close</button>
+        <!--</div>-->
       </div>
     </div>
   </div>
@@ -150,26 +169,26 @@
 
 <!----------------------------------------------------------------------------------------------->
 <div bsModal #viewModel="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog modal-md">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title pull-left">VIEW PRODUCT</h4>
+        <h4 class="modal-title pull-left">View Product</h4>
         <button type="button" class="close pull-right" aria-label="Close" (click)="viewModel.hide()">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
         <form>
-          <div class="form-group">
+          <div class="form-group row">
             <div class="col-md-8 col-lg-8">
-            <label> <h4>Product_ID:</h4></label>
+            <label> <h4>Product ID:</h4></label>
             </div>
             <div class="col-md-2 col-lg-2">
               <label> <h4>{{edit_p_id}}</h4></label>
             <!--<input type="number" class="form-control" value="{{edit_p_id}}" name="edit_productid" [(ngModel)]="edit_p_id" disabled="disabled">-->
             </div>
           </div>
-          <div class="form-group">
+          <div class="form-group row">
             <div class="col-md-8 col-lg-8">
               <label> <h4>Product Name:</h4></label>
             </div>
@@ -178,21 +197,25 @@
               <!--<input type="number" class="form-control" value="{{edit_p_id}}" name="edit_productid" [(ngModel)]="edit_p_id" disabled="disabled">-->
             </div>
           </div>
-          <div class="form-group">
+          <div class="form-group row">
             <div class="col-md-8 col-lg-8">
               <label> <h4>Product Price</h4></label>
             </div>
             <div class="col-md-2 col-lg-2">
-              <label> <h4>{{edit_p_price}}</h4></label>
+              <label> <h4>{{edit_p_price | currency:'USD':true:'1.2-2'}}</h4></label>
               <!--<input type="number" class="form-control" value="{{edit_p_id}}" name="edit_productid" [(ngModel)]="edit_p_id" disabled="disabled">-->
             </div>
           </div>
         </form>
       </div>
-
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" (click)="viewModel.hide()">OK</button>
-        <button type="button" class="btn btn-default" (click)="viewModel.hide()">Cancel</button>
+        <!--<div class="col-md-8 col-lg-8">-->
+        <!--</div>-->
+          <!--<div class="col-md-2 col-lg-2">-->
+        <button type="button" class="btn btn-default pull-right" (click)="viewModel.hide()">Cancel</button>
+        <button type="button" class="btn btn-primary pull-right" (click)="viewModel.hide()">OK</button>
+        <!--<button type="button" class="btn btn-primary" (click)="viewModel.hide()">Cancel</button>-->
+          <!--</div>-->
       </div>
     </div>
   </div>

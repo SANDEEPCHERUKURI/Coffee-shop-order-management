@@ -2,6 +2,7 @@ import { Component, OnInit,ViewChild } from '@angular/core';
 import { LocalStorageService } from 'angular-2-local-storage';
 import {SelectComponent} from 'ng2-select';
 import {Router} from '@angular/router';
+import { ModalDirective } from 'ngx-bootstrap';
 
 
 @Component({
@@ -14,6 +15,7 @@ export class BillingOrderformComponent implements OnInit {
     return this._selected;
   }
   @ViewChild('ng') public ngSelect :SelectComponent;
+  @ViewChild('billDeleteModel') public  billDeleteModel:ModalDirective;
 
 
   public listofProducts:any=[];
@@ -105,6 +107,15 @@ export class BillingOrderformComponent implements OnInit {
       }
     }
   };
+  delBillProduct=(del_index:any)=>{
+    let del_name=this.billProducts[del_index].bill_name;
+    this.list_items.push(del_name);
+    this.billProducts.splice(del_index,1);
+    this.ngSelect.items=this.list_items;
+    this.total_amount();
+    this.localStorageService.set("bill_products",this.billProducts);
+    this.billDeleteModel.hide()
+  }
   navBillPage=()=>{
     this.bill_id+=1;
    // alert(this.bill_id);

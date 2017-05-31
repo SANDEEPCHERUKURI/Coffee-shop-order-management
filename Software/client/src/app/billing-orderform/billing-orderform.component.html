@@ -2,8 +2,8 @@
 <div class="col-md-2 col-lg-2"></div>
 <div class="col-md-8 col-lg-8 col-sm-12">
 
-  <button class="btn btn-primary pull-right" (click)="ViewBillRecords()">VIEW BILL RECORDS</button>
-  <h3>Order your bill</h3>
+  <button class="btn btn-primary pull-right" (click)="ViewBillRecords()">View Bill Records</button>
+  <h3>Order Your Bill</h3>
   <div class="row">
     <div class="col-md-8 col-lg-8">
   <ng-select #ng [allowClear]="true"
@@ -25,10 +25,11 @@
     <thead>
     <tr>
       <th class="col-md-2">S.No</th>
-      <th class="col-md-2">Product Name</th>
+      <th class="col-md-4">Product Name</th>
       <th class="col-md-4">Price</th>
       <th class="col-md-6">QTY</th>
-      <th class="col-md-6">Amount</th>
+      <th class="col-md-7">Amount</th>
+      <th class="col-md-6">Actions</th>
     </tr>
     </thead>
     <!--/Table head-->
@@ -44,7 +45,7 @@
       <td>
         <h5><strong>{{i.bill_name}}</strong></h5>
       </td>
-      <td>{{i.bill_price}}</td>
+      <td>{{i.bill_price | currency:'USD':true:'1.2-2'}}</td>
       <td>
        <!-- <span class="qty">{{i.bill_qty}} </span>-->
         <!--<section class="form-control">-->
@@ -54,13 +55,36 @@
           <option *ngFor="let qyt of arr" [value]="qyt" value={{qyt}}>{{qyt}}</option>
         </select>
       </td>
-      <td>{{i.bill_tot_price}}</td>
+      <td>{{i.bill_tot_price | currency:'USD':true:'1.2-2'}}</td>
+      <td><button type="button" class="btn btn-danger btn-md" (click)="billDeleteModel.show()">
+        <span class="glyphicon glyphicon-trash"></span>
+      </button></td>
+      <div bsModal #billDeleteModel="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title pull-left">Delete Conformation</h4>
+              <button type="button" class="close pull-right" aria-label="Close" (click)="billDeleteModel.hide()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              Are you sure that you want to delete <strong>{{i.bill_name}}</strong> from bill
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" (click)="delBillProduct(j)">Delete</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal" (click)="billDeleteModel.hide()">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </tr>
     <!--/First row-->
     <!--Fourth row-->
     <tr>
       <td><h4><strong>Total Qty:</strong></h4></td>
       <td><h4>{{billProducts.length}}</h4></td>
+
       <td>
         <div class="container col-md-12">
           <input type="text" placeholder="Customer Name" class="form-control pull-left" name="customer" [(ngModel)]="customer">
@@ -69,7 +93,7 @@
       <td>
         <h4><strong>Total Amount</strong></h4></td>
       <td>
-        <h4><strong>{{totalBill}}</strong></h4></td>
+        <h4><strong>{{totalBill | currency:'USD':true:'1.2-2'}}</strong></h4></td>
       <td colspan="2">
         <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="right" title="Please Customer Name!" (click)="lgModal.show()" [disabled]="(!customer)">
           Complete purchase
@@ -100,7 +124,7 @@
         </button>
       </div>
       <div class="modal-body text-center">
-        <h2>Order Conformed!!!</h2>
+        <h4>Are you sure that you want to conform your bill Mr/Miss/Mrs.<strong>{{customer}}</strong></h4>
       </div>
       <div class="modal-footer">
         <!--<button type="button" class="btn btn-default pull-right" (click)="lgModal.hide()">Close</button>-->

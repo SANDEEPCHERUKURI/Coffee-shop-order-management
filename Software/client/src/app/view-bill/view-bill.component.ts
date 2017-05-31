@@ -75,7 +75,7 @@ export class ViewBillComponent implements OnInit {
     for(let i =0;i<this.billTable.length;i++){
       if(bill_id == i) {
         this.totalbill=tot_bill;
-        alert("equal");
+        //alert("equal");
         for (let j = 0; j < this.billTable[i].length; j++) {
 
             this.getshowbill.push(this.billTable[i]);
